@@ -28,6 +28,10 @@ edit:
 	$(EDITOR) $(NAME)/Dockerfile
 	rm -d $(NAME) 2>/dev/null || true
 
+delete:
+	rm $(NAME)/Dockerfile
+	rm -d $(NAME) 2>/dev/null || true
+
 build:
 	docker build ./$(NAME) -t $(IMAGE)
 	docker tag $(IMAGE) $(IMAGE_LATEST)
@@ -39,7 +43,8 @@ push:
 list:
 	@ls -1 | \
 		grep -v Makefile | \
-		grep -v README.md
+		grep -v README.md | \
+		grep -v LICENSE.md
 
 run:
 	docker run --rm -it $(IMAGE) $(CMD)
