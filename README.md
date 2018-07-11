@@ -6,6 +6,11 @@ Set of [Dockerfiles] and a [Make] based wrapper for buildig [Docker] images.
 
 ## Usage
 
+Just hit "make" to see usage:
+
+```
+$ make
+
 Usage: make <COMMAND> NAME=<name> [OPTIONS]
 
 COMMANDS
@@ -20,6 +25,7 @@ OPTIONS
     DOCKER_ID=<docker_id> (default: aialferov)
     VERSION=<version> (default: latest)
     CMD=<cmd> (makes sense for "run" only)
+```
 
 <!-- Links -->
 
