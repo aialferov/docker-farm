@@ -32,3 +32,6 @@ OPTIONS
 [Make]: https://www.gnu.org/software/make
 [Docker]: https://www.docker.com
 [Dockerfiles]: https://docs.docker.com/engine/reference/builder
+
+<!-- Badges -->
+[MIT badge]: https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square
