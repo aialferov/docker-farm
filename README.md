@@ -29,6 +29,7 @@ OPTIONS
 
 <!-- Links -->
 
+[MIT]: https://opensource.org/licenses/MIT
 [Make]: https://www.gnu.org/software/make
 [Docker]: https://www.docker.com
 [Dockerfiles]: https://docs.docker.com/engine/reference/builder
