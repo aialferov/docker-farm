@@ -5,7 +5,7 @@ ARG GIT_URL=https://github.com/erlang/otp
 
 RUN apk upgrade --update --no-cache && \
     apk add --no-cache ncurses openssl && \
-    apk add --no-cache --virtual .erlang-build-deps \
+    apk add --no-cache --virtual .build-deps \
         git \
         g++ \
         dpkg \
@@ -48,4 +48,4 @@ RUN apk upgrade --update --no-cache && \
     make install && \
     cd ../ && \
     rm -rf otp && \
-    apk del .erlang-build-deps
+    apk del .build-deps
