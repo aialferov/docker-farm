@@ -40,6 +40,8 @@ push:
 
 release:
 	docker tag $(IMAGE) $(IMAGE_LATEST)
+
+push-release:
 	docker push $(IMAGE_LATEST)
 
 list:
