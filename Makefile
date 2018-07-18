@@ -34,10 +34,12 @@ delete:
 
 build:
 	docker build ./$(NAME) -t $(IMAGE)
-	docker tag $(IMAGE) $(IMAGE_LATEST)
 
 push:
 	docker push $(IMAGE)
+
+release:
+	docker tag $(IMAGE) $(IMAGE_LATEST)
 	docker push $(IMAGE_LATEST)
 
 list:
