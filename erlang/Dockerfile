@@ -1,16 +1,13 @@
-FROM alpine:3.8
+FROM alpine
 
-ARG ERLANG_VERSION=21.0.3
+ARG ERLANG_VERSION=21.0.5
 ARG GIT_URL=https://github.com/erlang/otp
 
-RUN apk upgrade --update --no-cache && \
-    apk add --no-cache ncurses openssl && \
+RUN apk add --no-cache --update ncurses openssl git make && \
     apk add --no-cache --virtual .build-deps \
-        git \
         g++ \
         dpkg \
         dpkg-dev \
-        make \
         autoconf \
         ncurses-dev \
         openssl-dev && \
@@ -49,3 +46,7 @@ RUN apk upgrade --update --no-cache && \
     cd ../ && \
     rm -rf otp && \
     apk del .build-deps
+
+RUN wget https://s3.amazonaws.com/rebar3/rebar3 && \
+    install rebar3 /usr/local/bin && \
+    rm rebar3
