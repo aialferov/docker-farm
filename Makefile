@@ -57,20 +57,25 @@ logout:
 usage:
 	@echo "Usage: make <Target> [Variables]"
 	@echo
+	@echo "Current tag: $(REGISTRY)/$(USER)/$(PROJECT):$(VERSION)"
+	@echo "Dockerfile: images/$(PROJECT)/Dockerfile"
+	@echo
+	@echo "Adjustable with Variables, see below."
+	@echo
 	@echo "Targets"
 	@printf '$(shell printf "    %%-$(USAGE_PADDING)s %%s\\\n%.0s" {1..12})' \
-	edit "Edit \"images/$(PROJECT)/Dockerfile\" with \"$(EDITOR)\"" \
-	delete "Delete \"images/$(PROJECT)/Dockerfile\"" \
+	edit "Edit current Dockerfile" \
+	delete "Delete current Dockerfile along with the containing folder" \
 	list "List available Dockerfiles" \
-	build "Build image \"$(IMAGE)\" from \"images/$(PROJECT)/Dockerfile\"" \
-	push "Push image \"$(IMAGE)\"" \
-	release "Tag \"$(IMAGE)\" as \"$(IMAGE_LATEST)\" and push both tags" \
-	local-release "Tag \"$(IMAGE)\" as \"$(IMAGE_LATEST)\"" \
-	shell "Run container of \"$(IMAGE)\" and exec shell in it" \
-	clean "Prune everything with label \"name=$(PROJECT)\"" \
-	distclean "Remove images \"$(IMAGE)\" and \"$(IMAGE_LATEST)\"" \
-	login "Login to \"$(REGISTRY)\" as \"$(USER)\"" \
-	logout "Logout from \"$(REGISTRY)\""
+	build "Build image from current Dockerfile and set current tag" \
+	push "Push current tag" \
+	release "Create the \"latest\" tag on the current one and push both tags" \
+	local-release "Create the \"latest\" tag on the current one" \
+	shell "Run container of current tag image and exec shell in it" \
+	clean "Prune everything with label \"PROJECT=\$$PROJECT\"" \
+	distclean "Remove images current and \"latest\" tags" \
+	login "Login to the current registry as current user" \
+	logout "Logout from the current registry"
 	@echo
 	@echo "Variables"
 	@printf '$(shell printf "    %%-$(USAGE_PADDING)s %%s\\\n%.0s" {1..5})' \

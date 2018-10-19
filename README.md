@@ -1,8 +1,8 @@
 # Docker Farm
 
-[![License: MIT][MIT badge]][MIT]
+[![License: MIT][MIT Badge]][MIT]
 
-Set of [Dockerfiles] and a [Make] based wrapper for buildig [Docker] images.
+Set of [Dockerfiles] and a [Make] based wrapper for building [Docker] images.
 
 ## Usage
 
@@ -10,21 +10,33 @@ Just hit "make" to see usage:
 
 ```
 $ make
+Usage: make <Target> [Variables]
 
-Usage: make <COMMAND> NAME=<name> [OPTIONS]
+Current tag: docker.io/aialferov/example:1.0.0
+Dockerfile: images/example/Dockerfile
 
-COMMANDS
-    build
-    push
-    list
-    run 
-    login
-    logout
+Adjustable with Variables, see below.
 
-OPTIONS
-    DOCKER_ID=<docker_id> (default: aialferov)
-    VERSION=<version> (default: latest)
-    CMD=<cmd> (makes sense for "run" only)
+Targets
+    edit           Edit current Dockerfile
+    delete         Delete current Dockerfile along with the containing folder
+    list           List available Dockerfiles
+    build          Build image from current Dockerfile and set current tag
+    push           Push current tag
+    release        Create the "latest" tag on the current one and push both tags
+    local-release  Create the "latest" tag on the current one
+    shell          Run container of current tag image and exec shell in it
+    clean          Prune everything with label "PROJECT=$PROJECT"
+    distclean      Remove images current and "latest" tags
+    login          Login to the current registry as current user
+    logout         Logout from the current registry
+
+Variables
+    PROJECT        Image name (current: example)
+    VERSION        Image version (current: 1.0.0)
+    REGISTRY       Docker registry (current: docker.io)
+    USER           Docker ID (current: aialferov)
+    EDITOR         Editor to edit a Dockerfile (current: vim)
 ```
 
 <!-- Links -->
@@ -35,4 +47,5 @@ OPTIONS
 [Dockerfiles]: https://docs.docker.com/engine/reference/builder
 
 <!-- Badges -->
-[MIT badge]: https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square
+
+[MIT Badge]: https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square
