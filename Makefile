@@ -16,19 +16,19 @@ USAGE_PADDING = 14
 default: usage
 
 edit:
-	mkdir -p $(PROJECT)
-	$(EDITOR) $(PROJECT)/Dockerfile
-	rm -d $(PROJECT) 2>/dev/null || true
+	mkdir -p images/$(PROJECT)
+	$(EDITOR) images/$(PROJECT)/Dockerfile
+	rm -d images/$(PROJECT) 2>/dev/null || true
 
 delete:
-	rm $(PROJECT)/Dockerfile
-	rm -d $(PROJECT) 2>/dev/null || true
+	rm images/$(PROJECT)/Dockerfile
+	rm -d images/$(PROJECT) 2>/dev/null || true
 
 list:
-	@ls -d */ | xargs -n1 | tr -d /
+	@ls -1 images
 
 build:
-	docker build $(BUILD_ARGS) ./$(PROJECT) -t $(IMAGE)
+	docker build $(BUILD_ARGS) ./images/$(PROJECT) -t $(IMAGE)
 
 push:
 	docker push $(IMAGE)
@@ -59,10 +59,10 @@ usage:
 	@echo
 	@echo "Targets"
 	@printf '$(shell printf "    %%-$(USAGE_PADDING)s %%s\\\n%.0s" {1..12})' \
-	edit "Edit \"$(PROJECT)/Dockerfile\" with \"$(EDITOR)\"" \
-	delete "Delete \"$(PROJECT)/Dockerfile\"" \
+	edit "Edit \"images/$(PROJECT)/Dockerfile\" with \"$(EDITOR)\"" \
+	delete "Delete \"images/$(PROJECT)/Dockerfile\"" \
 	list "List available Dockerfiles" \
-	build "Build image \"$(IMAGE)\" from \"$(PROJECT)/Dockerfile\"" \
+	build "Build image \"$(IMAGE)\" from \"images/$(PROJECT)/Dockerfile\"" \
 	push "Push image \"$(IMAGE)\"" \
 	release "Tag \"$(IMAGE)\" as \"$(IMAGE_LATEST)\" and push both tags" \
 	local-release "Tag \"$(IMAGE)\" as \"$(IMAGE_LATEST)\"" \
