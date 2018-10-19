@@ -1,5 +1,5 @@
 PROJECT = example
-VERSION = $(shell grep "ARG VERSION=" $(PROJECT)/Dockerfile | cut -d= -f2)
+VERSION = $(shell grep "ARG VERSION" images/$(PROJECT)/Dockerfile | cut -d= -f2)
 
 REGISTRY = docker.io
 USER = aialferov
