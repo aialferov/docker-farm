@@ -23,7 +23,7 @@ RUN apk upgrade --no-cache --update && \
         libnfnetlink-dev && \
     wget http://www.keepalived.org/software/keepalived-$VERSION.tar.gz && \
     tar zxf keepalived-$VERSION.tar.gz && \
-#   patch -p0 < keepalived.patch && \
+    patch -p0 < keepalived.patch && \
     cd keepalived-$VERSION && \
     ./configure && \
     make -j4 && \
