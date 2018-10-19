@@ -46,7 +46,7 @@ clean:
 	docker system prune -f --filter label=PROJECT=$(PROJECT)
 
 distclean: clean
-	docker rmi $(IMAGE_LATEST) $(IMAGE)
+	docker rmi $(IMAGE_LATEST) $(IMAGE) 2>/dev/null || true
 
 login:
 	docker login $(REGISTRY) --username $(USER)
