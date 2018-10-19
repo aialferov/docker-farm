@@ -1,6 +1,8 @@
 FROM alpine
 
-ARG ERLANG_VERSION=21.0.5
+LABEL PROJECT=erlang
+ARG VERSION=21.1
+
 ARG GIT_URL=https://github.com/erlang/otp
 
 RUN apk add --no-cache --update ncurses git make && \
@@ -13,7 +15,7 @@ RUN apk add --no-cache --update ncurses git make && \
         findutils \
         ncurses-dev \
         openssl-dev && \
-    git clone -b OTP-$ERLANG_VERSION \
+    git clone -b OTP-$VERSION \
               --single-branch \
               --depth 1 \
               $GIT_URL && \
@@ -55,7 +57,7 @@ RUN apk add --no-cache --update ncurses git make && \
         --without-cosFileTransfer \
         --without-cosNotification \
         --without-cosTransactions && \
-    make -j && \
+    make -j2 && \
     make install && \
     cd ../ && \
     rm -rf otp && \

@@ -1,10 +1,14 @@
 FROM alpine:3.8
 
-ARG KUBESPRAY_VERSION=2.5.0
+LABEL PROJECT=kubespray
+ARG VERSION=2.6.0
 ARG GIT_URL=https://github.com/kubernetes-incubator/kubespray
 
-RUN apk upgrade --update --no-cache && \
-    apk add --no-cache python && \
+RUN apk upgrade --no-cache --update && \
+    apk add --no-cache \
+        python \
+        openssh \
+        sshpass && \
     apk add --no-cache --virtual .build-deps \
         git \
         g++ \
@@ -14,7 +18,7 @@ RUN apk upgrade --update --no-cache && \
         python-dev \
         openssl-dev && \
     pip install --upgrade pip && \
-    git clone -b v$KUBESPRAY_VERSION \
+    git clone -b v$VERSION \
               --single-branch \
               --depth 1 \
               $GIT_URL && \
@@ -22,4 +26,5 @@ RUN apk upgrade --update --no-cache && \
     apk del .build-deps
 
 WORKDIR /kubespray
+
 ENTRYPOINT ["ansible-playbook"]

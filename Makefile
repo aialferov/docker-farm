@@ -1,63 +1,81 @@
-NAME =
+PROJECT = example
+VERSION = $(shell grep "ARG VERSION=" $(PROJECT)/Dockerfile | cut -d= -f2)
 
-DOCKER_ID = aialferov
-VERSION = latest
+REGISTRY = docker.io
+USER = aialferov
 
 EDITOR = vim
 
-IMAGE = $(DOCKER_ID)/$(NAME):$(VERSION)
-IMAGE_LATEST = $(DOCKER_ID)/$(NAME):latest
+IMAGE = $(REGISTRY)/$(USER)/$(PROJECT):$(VERSION)
+IMAGE_LATEST = $(REGISTRY)/$(USER)/$(PROJECT):latest
 
-all:
-	@echo "Usage: make <COMMAND> NAME=<name> [OPTIONS]"
-	@echo
-	@echo "COMMANDS"
-	@echo "    build"
-	@echo "    push"
-	@echo "    list"
-	@echo "    run"
-	@echo "    login"
-	@echo "    logout"
-	@echo
-	@echo "OPTIONS"
-	@echo "    DOCKER_ID=<docker_id> (default: $(DOCKER_ID))"
-	@echo "    VERSION=<version> (default: $(VERSION))"
+BUILD_ARGS = --build-arg VERSION=$(VERSION)
+
+USAGE_PADDING = 14
+
+default: usage
 
 edit:
-	mkdir -p $(NAME)
-	$(EDITOR) $(NAME)/Dockerfile
-	rm -d $(NAME) 2>/dev/null || true
+	mkdir -p $(PROJECT)
+	$(EDITOR) $(PROJECT)/Dockerfile
+	rm -d $(PROJECT) 2>/dev/null || true
 
 delete:
-	rm $(NAME)/Dockerfile
-	rm -d $(NAME) 2>/dev/null || true
+	rm $(PROJECT)/Dockerfile
+	rm -d $(PROJECT) 2>/dev/null || true
+
+list:
+	@ls -d */ | xargs -n1 | tr -d /
 
 build:
-	docker build ./$(NAME) -t $(IMAGE)
+	docker build $(BUILD_ARGS) ./$(PROJECT) -t $(IMAGE)
 
 push:
 	docker push $(IMAGE)
 
-release:
-	docker tag $(IMAGE) $(IMAGE_LATEST)
-
-push-release:
+release: local-release push
 	docker push $(IMAGE_LATEST)
 
-list:
-	@ls -1 | \
-		grep -v Makefile | \
-		grep -v README.md | \
-		grep -v LICENSE.md
+local-release:
+	docker tag $(IMAGE) $(IMAGE_LATEST)
 
-run:
-	docker run --rm -it $(IMAGE) $(CMD)
-
-login:
-	docker login --username $(DOCKER_ID)
-
-logout:
-	docker logout
+shell:
+	docker run --rm -it --entrypoint sh $(IMAGE)
 
 clean:
-	docker rmi $(IMAGE)
+	docker system prune -f --filter label=PROJECT=$(PROJECT)
+
+distclean: clean
+	docker rmi $(IMAGE_LATEST) $(IMAGE)
+
+login:
+	docker login $(REGISTRY) --username $(USER)
+
+logout:
+	docker logout $(REGISTRY)
+
+usage:
+	@echo "Usage: make <Target> [Variables]"
+	@echo
+	@echo "Targets"
+	@printf '$(shell printf "    %%-$(USAGE_PADDING)s %%s\\\n%.0s" {1..12})' \
+	edit "Edit \"$(PROJECT)/Dockerfile\" with \"$(EDITOR)\"" \
+	delete "Delete \"$(PROJECT)/Dockerfile\"" \
+	list "List available Dockerfiles" \
+	build "Build image \"$(IMAGE)\" from \"$(PROJECT)/Dockerfile\"" \
+	push "Push image \"$(IMAGE)\"" \
+	release "Tag \"$(IMAGE)\" as \"$(IMAGE_LATEST)\" and push both tags" \
+	local-release "Tag \"$(IMAGE)\" as \"$(IMAGE_LATEST)\"" \
+	shell "Run container of \"$(IMAGE)\" and exec shell in it" \
+	clean "Prune everything with label \"name=$(PROJECT)\"" \
+	distclean "Remove images \"$(IMAGE)\" and \"$(IMAGE_LATEST)\"" \
+	login "Login to \"$(REGISTRY)\" as \"$(USER)\"" \
+	logout "Logout from \"$(REGISTRY)\""
+	@echo
+	@echo "Variables"
+	@printf '$(shell printf "    %%-$(USAGE_PADDING)s %%s\\\n%.0s" {1..5})' \
+	PROJECT "Image name (current: $(PROJECT))" \
+	VERSION "Image version (current: $(VERSION))" \
+	REGISTRY "Docker registry (current: $(REGISTRY))" \
+	USER "Docker ID (current: $(USER))" \
+	EDITOR "Editor to edit a Dockerfile (current: $(EDITOR))"

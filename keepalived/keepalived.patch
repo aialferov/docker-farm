@@ -1,0 +1,10 @@
+--- keepalived-2.0.7/keepalived/core/process.c	2018-10-18 15:09:37.000000000 +0200
++++ keepalived-2.0.7/keepalived/core/process.c	2018-10-18 15:09:56.000000000 +0200
+@@ -30,6 +30,7 @@
+ #ifdef _HAVE_SCHED_RT_
+ #include <sched.h>
+ #endif
++#include <stdbool.h>
+ 
+ #include "process.h"
+ #include "logger.h"

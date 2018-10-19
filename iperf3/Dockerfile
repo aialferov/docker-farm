@@ -1,2 +1,7 @@
 FROM alpine
-RUN apk --update --no-cache add iperf3
+
+LABEL PROJECT=iperf3
+ARG VERSION=latest
+
+RUN apk upgrade --no-cache --update && \
+    apk add --no-cache iperf3
