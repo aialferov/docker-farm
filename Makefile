@@ -17,8 +17,9 @@ default: usage
 
 edit:
 	mkdir -p images/$(PROJECT)
+	test -s images/$(PROJECT)/Dockerfile || \
+		cp images/example/Dockerfile images/$(PROJECT)
 	$(EDITOR) images/$(PROJECT)/Dockerfile
-	rm -d images/$(PROJECT) 2>/dev/null || true
 
 delete:
 	rm images/$(PROJECT)/Dockerfile
