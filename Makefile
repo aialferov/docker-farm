@@ -18,7 +18,8 @@ default: usage
 edit:
 	mkdir -p images/$(PROJECT)
 	test -s images/$(PROJECT)/Dockerfile || \
-		cp images/example/Dockerfile images/$(PROJECT)
+		sed s/example/$(PROJECT)/ images/example/Dockerfile | \
+		    tee images/$(PROJECT)/Dockerfile > /dev/null
 	$(EDITOR) images/$(PROJECT)/Dockerfile
 
 delete:
