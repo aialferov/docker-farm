@@ -1,0 +1,28 @@
+#!/bin/sh
+
+function main {
+    trap stop $(signals)
+    wait
+}
+
+function signals {
+    echo "SIGTERM SIGINT"
+}
+
+function wait {
+    echo "$(ts) Waiting for one of $(signals)..."
+    while :; do
+        sleep 1
+    done
+}
+
+function stop() { 
+    echo "$(ts) Done."
+    exit 0
+}
+
+function ts {
+    date -u +%FT%TZ
+}
+
+main "$@"
